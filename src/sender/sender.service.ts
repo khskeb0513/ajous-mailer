@@ -1,4 +1,32 @@
 import { Injectable } from '@nestjs/common';
 
+import { lastValueFrom } from 'rxjs';
+import { HttpService } from '@nestjs/axios';
+import { MailRequestDto } from './dto/mail-request.dto';
+
 @Injectable()
-export class SenderService {}
+export class SenderService {
+  constructor(private readonly httpService: HttpService) {}
+
+  public async sender(
+    to: string[],
+    senderName: string,
+    senderAddress: string,
+    subject: string,
+    content: string[],
+  ): Promise<boolean> {
+    const response = await lastValueFrom(
+      this.httpService.post(
+        'https://api.mailazy.com/v1/mail/send',
+        new MailRequestDto(to, senderName, senderAddress, subject, content),
+        {
+          headers: {
+            'X-Api-Key': process.env.MAILAZY_KEY,
+            'X-Api-Secret': process.env.MAILAZY_SECRET,
+          },
+        },
+      ),
+    );
+    return response.status < 399;
+  }
+}
