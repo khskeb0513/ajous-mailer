@@ -34,7 +34,7 @@ export class MealsService {
     const date = DateTime.local().setZone('Asia/Seoul').toFormat('yyyyMMdd');
     const response = await this.fetch(date);
     const content =
-      '<img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous-logo.jpg" /><br>' +
+      '<img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>' +
       '<span>Ajous Meals sent.</span><br><hr>' +
       Object.values(response).join('<br>');
     return this.senderService.sender(
