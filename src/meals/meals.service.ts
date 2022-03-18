@@ -25,22 +25,47 @@ export class MealsService {
     return query.createdAt;
   }
 
+  public async changeSuspendStatus(email: string) {
+    const findQuery = await this.mealsSendListEntityRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!findQuery) {
+      throw new Error('invalid email');
+    }
+    await this.mealsSendListEntityRepository.update(
+      {
+        email: findQuery.email,
+      },
+      {
+        suspend: !findQuery.suspend,
+      },
+    );
+    return { suspend: findQuery.suspend };
+  }
+
   public async findAllEmails() {
-    const query = await this.mealsSendListEntityRepository.find();
+    const query = await this.mealsSendListEntityRepository.find({
+      where: {
+        suspend: false,
+      },
+    });
     return query.map((v) => v.email);
   }
 
   public async render(date: string) {
     const response = await this.fetch(date);
+    if (!response) return null;
     return (
-      `<style>body { font-family: serif } .main { text-align: center }</style><body><img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>
-      <span>Ajous Meals sent.</span><hr><div class="main">` +
+      `<style>body { font-family: serif } .main { text-align: center; }</style><body><header><img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>
+      <span style="font-style: italic">Ajous Meals sent.</span><hr></header><div class="main">` +
       Object.values(response).join('<br>') +
       `</div></body>`
     );
   }
 
-  public async fetch(date: string): Promise<FetchResponseDto> {
+  public async fetch(date: string): Promise<FetchResponseDto | null> {
     const params = {
       categoryId: 221,
       yyyymmdd: date,
@@ -51,7 +76,8 @@ export class MealsService {
         params,
       ),
     );
-    return response.data['p018Text'];
+    const p018Text = response.data['p018Text'];
+    return Object.values(p018Text).length === 0 ? null : p018Text;
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_6AM, {
@@ -60,6 +86,7 @@ export class MealsService {
   public async routine() {
     const date = DateTime.local().setZone('Asia/Seoul').toFormat('yyyyMMdd');
     const content = await this.render(date);
+    if (!content) return false;
     return this.senderService.sender(
       await this.findAllEmails(),
       'Ajous Meals',

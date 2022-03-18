@@ -14,6 +14,9 @@ export class MealsSendListEntity {
   @Column()
   email: string;
 
+  @Column()
+  suspend: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

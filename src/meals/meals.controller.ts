@@ -36,6 +36,13 @@ export class MealsController {
     return this.mealsService.register(email);
   }
 
+  @Post('/changeSuspendStatus')
+  public async changeSuspendStatus(@Body('email') email: string) {
+    return this.mealsService.changeSuspendStatus(email).catch((e) => {
+      throw new HttpException(e.message, 400);
+    });
+  }
+
   @Get('/findAllEmails')
   @UseGuards(IsDevelopmentGuard)
   public async findAllEmails() {
