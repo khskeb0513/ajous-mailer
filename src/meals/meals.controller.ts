@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { MealsService } from './meals.service';
 import { IsDevelopmentGuard } from '../auth/is-development.guard';
 
@@ -9,6 +17,12 @@ export class MealsController {
   @Get('/fetch')
   public async fetch(@Query('date') date: string) {
     return this.mealsService.fetch(date);
+  }
+
+  @Get('/render')
+  public async render(@Query('date') date: string) {
+    if (!date) throw new HttpException('invalid date', 400);
+    return this.mealsService.render(date);
   }
 
   @Get('/routine')

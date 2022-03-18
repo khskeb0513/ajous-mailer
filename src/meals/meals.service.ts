@@ -30,6 +30,16 @@ export class MealsService {
     return query.map((v) => v.email);
   }
 
+  public async render(date: string) {
+    const response = await this.fetch(date);
+    return (
+      `<style>body { font-family: serif } .main { text-align: center }</style><body><img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>
+      <span>Ajous Meals sent.</span><hr><div class="main">` +
+      Object.values(response).join('<br>') +
+      `</div></body>`
+    );
+  }
+
   public async fetch(date: string): Promise<FetchResponseDto> {
     const params = {
       categoryId: 221,
@@ -44,16 +54,12 @@ export class MealsService {
     return response.data['p018Text'];
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_7AM, {
+  @Cron(CronExpression.EVERY_DAY_AT_6AM, {
     timeZone: 'Asia/Seoul',
   })
   public async routine() {
     const date = DateTime.local().setZone('Asia/Seoul').toFormat('yyyyMMdd');
-    const response = await this.fetch(date);
-    const content =
-      `<img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>
-      <span>Ajous Meals sent.</span><hr>` +
-      Object.values(response).join('<br>');
+    const content = await this.render(date);
     return this.senderService.sender(
       await this.findAllEmails(),
       'Ajous Meals',
