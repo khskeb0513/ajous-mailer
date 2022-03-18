@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { MealsService } from './meals.service';
+import { IsDevelopmentGuard } from '../auth/is-development.guard';
 
 @Controller('meals')
 export class MealsController {
@@ -11,6 +12,7 @@ export class MealsController {
   }
 
   @Get('/routine')
+  @UseGuards(IsDevelopmentGuard)
   public async routine() {
     return this.mealsService.routine();
   }
@@ -21,6 +23,7 @@ export class MealsController {
   }
 
   @Get('/findAllEmails')
+  @UseGuards(IsDevelopmentGuard)
   public async findAllEmails() {
     return this.mealsService.findAllEmails();
   }

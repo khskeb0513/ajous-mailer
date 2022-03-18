@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MealsSendListEntity } from './meals/entity/meals-send-list.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MealsSendListEntity } from './meals/entity/meals-send-list.entity';
       entities: [MealsSendListEntity],
       synchronize: true,
     }),
+    AuthModule,
   ],
 })
 export class AppModule {}

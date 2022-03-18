@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer';
-import { IsNotEmpty, IsNumber, validateSync } from 'class-validator';
+import { IsIn, IsNotEmpty, IsNumber, validateSync } from 'class-validator';
 
 class EnvironmentVariables {
   @IsNumber()
@@ -25,6 +25,9 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   DB_NAME: string;
+
+  @IsIn(['production', 'development'])
+  NODE_ENV: string;
 }
 
 export function validate(config: Record<string, unknown>) {
