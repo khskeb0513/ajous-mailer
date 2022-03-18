@@ -9,11 +9,20 @@ export class MailRequestDto {
     senderName: string,
     senderAddress: string,
     public subject: string,
-    content: string[],
+    content: string,
   ) {
     this.to = to;
     this.from = `${senderName} <${senderAddress}>`;
-    this.content = content.map((value) => new MailContent(value));
+    this.content = [
+      {
+        type: 'text/plain',
+        value: content,
+      },
+      {
+        type: 'text/html',
+        value: content,
+      },
+    ];
   }
 
   from: string;

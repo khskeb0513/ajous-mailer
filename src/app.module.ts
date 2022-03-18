@@ -1,16 +1,30 @@
 import { Module } from '@nestjs/common';
-import { MealsModule } from './meals/meals.module';
+import { MealsHttpModule } from './meals/meals-http.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SenderModule } from './sender/sender.module';
 import { ConfigModule } from '@nestjs/config';
+import { validate } from './env.validation';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MealsSendListEntity } from './meals/entity/meals-send-list.entity';
 
 @Module({
   imports: [
-    MealsModule,
+    MealsHttpModule,
     ScheduleModule.forRoot(),
     SenderModule,
     ConfigModule.forRoot({
       envFilePath: ['.development.env', '.production.env'],
+      validate,
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mariadb',
+      host: process.env['DB_HOST'],
+      port: parseInt(process.env['DB_PORT'], 10),
+      username: process.env['DB_USERNAME'],
+      password: process.env['DB_PASSWORD'],
+      database: process.env['DB_NAME'],
+      entities: [MealsSendListEntity],
+      synchronize: true,
     }),
   ],
 })

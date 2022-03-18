@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MealsController } from './meals.controller';
-import { MealsService } from './meals.service';
-import { HttpModule } from '@nestjs/axios';
-import { SenderModule } from '../sender/sender.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MealsSendListEntity } from './entity/meals-send-list.entity';
 
 @Module({
-  controllers: [MealsController],
-  providers: [MealsService],
-  imports: [HttpModule, SenderModule],
+  imports: [TypeOrmModule.forFeature([MealsSendListEntity])],
+  exports: [TypeOrmModule],
 })
 export class MealsModule {}

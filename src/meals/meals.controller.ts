@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { MealsService } from './meals.service';
 
 @Controller('meals')
@@ -13,5 +13,15 @@ export class MealsController {
   @Get('/routine')
   public async routine() {
     return this.mealsService.routine();
+  }
+
+  @Post('/register')
+  public async register(@Body('email') email: string) {
+    return this.mealsService.register(email);
+  }
+
+  @Get('/findAllEmails')
+  public async findAllEmails() {
+    return this.mealsService.findAllEmails();
   }
 }

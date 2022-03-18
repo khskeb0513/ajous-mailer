@@ -13,12 +13,19 @@ export class SenderService {
     senderName: string,
     senderAddress: string,
     subject: string,
-    content: string[],
+    content: string,
   ): Promise<boolean> {
+    const mailRequestDto = new MailRequestDto(
+      to,
+      senderName,
+      senderAddress,
+      subject,
+      content,
+    );
     const response = await lastValueFrom(
       this.httpService.post(
         'https://api.mailazy.com/v1/mail/send',
-        new MailRequestDto(to, senderName, senderAddress, subject, content),
+        mailRequestDto,
         {
           headers: {
             'X-Api-Key': process.env.MAILAZY_KEY,
