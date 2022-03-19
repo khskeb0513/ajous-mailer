@@ -8,6 +8,7 @@ import { DateTime } from 'luxon';
 import { Repository } from 'typeorm';
 import { MealsSendListEntity } from './entity/meals-send-list.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { HbsCompileService } from '../sender/hbs-compile.service';
 
 @Injectable()
 export class MealsService {
@@ -57,12 +58,9 @@ export class MealsService {
   public async render(date: string) {
     const response = await this.fetch(date);
     if (!response) return null;
-    return (
-      `<style>body { font-family: serif } .main { text-align: center; }</style><body><header><img alt="ajous logo" width="128" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous2.svg" /><br>
-      <span style="font-style: italic">Ajous Meals sent.</span><hr></header><div class="main">` +
-      Object.values(response).join('<br>') +
-      `</div></body>`
-    );
+    return HbsCompileService.compile('/mails/meals/render.hbs', {
+      content: response,
+    });
   }
 
   public async fetch(date: string): Promise<FetchResponseDto | null> {
