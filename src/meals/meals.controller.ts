@@ -48,4 +48,10 @@ export class MealsController {
   public async findAllEmails() {
     return this.mealsService.findAllEmails();
   }
+
+  @Get('/test')
+  @UseGuards(IsDevelopmentGuard)
+  public async test() {
+    return this.mealsService.test();
+  }
 }

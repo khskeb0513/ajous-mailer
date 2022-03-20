@@ -93,4 +93,16 @@ export class MealsService {
       content,
     );
   }
+
+  public async test() {
+    const date = '20220318';
+    const content = await this.render(date);
+    return this.senderService.sender(
+      ['h5k@ajou.ac.kr'],
+      'Ajous Meals',
+      'meals@ajous.ga',
+      `${date} Meal Notice.`,
+      content,
+    );
+  }
 }

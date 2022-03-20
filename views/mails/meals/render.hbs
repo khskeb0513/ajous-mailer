@@ -5,52 +5,26 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <style>
-    header {
-      color: white;
-      background: #0054ad;
-    }
-
-    .title {
-      padding: 8px 8px 0 8px;
-    }
-
-    body {
-      font-family: serif;
-      margin: 0;
-      background: #ebebeb;
-    }
-
-    .main {
-      padding: 8px;
-      text-align: center;
-    }
-
-    .divider1 {
-      max-width: 60%;
-      max-height: 32px;
-    }
-  </style>
-  <title></title>
 </head>
-<body>
-<header>
-  <div class="title">
+<body style="font-family: serif;margin: 0;">
+<header style="color: white;background: #0054ad;">
+  <div style="padding: 8px 8px 0 8px;">
     <img alt="ajous logo" width="96"
-         src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous-white-bold.svg" />
+         src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/ajous-white-bold-1.png" />
     <br>
-    <small style="font-style: italic">Ajous Meals sent.</small>
+    <small style="font-style: italic;">Ajous Meals sent.</small>
   </div>
   <hr>
 </header>
-<div class="main">
+<div style="padding: 8px;text-align: center;color: black;text-decoration: none;">
   {{#content}}
     {{{menuDt}}}
     <br>
     {{{restaurantNm}}}
     <br>
     <br>
-    <img class="divider1" width="auto" src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/divider1.png" alt="divider">
+    <img class="divider1" width="auto" style="max-width: 60%;max-height: 32px;"
+         src="https://ajous-10.s3.ap-northeast-2.amazonaws.com/public/divider1.png" alt="divider">
     <br>
     {{{breakfast}}}
     <br>
