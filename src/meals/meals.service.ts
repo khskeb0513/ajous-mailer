@@ -58,7 +58,7 @@ export class MealsService {
   public async render(date: string) {
     const response = await this.fetch(date);
     if (!response) return null;
-    return HbsCompileService.compile('/mails/meals/render.hbs', {
+    return HbsCompileService.compile('/render/meals/render.hbs', {
       content: response,
     });
   }

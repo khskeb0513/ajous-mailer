@@ -6,6 +6,9 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MealsSendListEntity } from './meals/entity/meals-send-list.entity';
+import { AssignmentsModule } from './assignments/assignments.module';
+import { GlobalModule } from './global/global.module';
+import { LibraryModule } from './library/library.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { MealsSendListEntity } from './meals/entity/meals-send-list.entity';
       entities: [MealsSendListEntity],
       synchronize: true,
     }),
+    AssignmentsModule,
+    GlobalModule,
+    LibraryModule,
   ],
 })
 export class AppModule {}

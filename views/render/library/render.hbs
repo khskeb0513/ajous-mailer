@@ -1,0 +1,16 @@
+<div style="color: black;text-decoration: none;">
+  {{#sorted}}
+    <div
+      style="border: 1px solid {{color}};background: white;border-left-width: 8px;margin-bottom: 12px;padding: 8px 64px 8px 8px;"
+      title="{{biblio.titleStatement}}">
+      <a href="https://library.ajou.ac.kr/#/search/detail/{{biblio.id}}" target="_blank">
+        <small style="text-decoration: underline black;color: black;">{{biblio.titleStatement}}</small>
+      </a>
+      <br>
+      <small style="word-break: keep-all">청구기호: {{callNo}}</small><br>
+      <small style="word-break: keep-all">ISBN: {{biblio.isbn}}</small><br>
+      <small style="word-break: keep-all">대여일: {{chargeDate}}</small><br>
+      <small style="word-break: keep-all">반납일: {{dueDate}}</small><br>
+    </div>
+  {{/sorted}}
+</div>
