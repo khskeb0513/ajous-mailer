@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import {
-  FetchDto,
-  FetchResponseDto,
-  Sorted,
-} from './dto/fetch-response.dto';
+import { FetchDto, FetchResponseDto, Sorted } from './dto/fetch-response.dto';
 import { DateTime } from 'luxon';
 import { HbsCompileService } from '../sender/hbs-compile.service';
 
