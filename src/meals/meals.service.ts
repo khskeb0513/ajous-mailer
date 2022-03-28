@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
 import { FetchResponseDto } from './dto/fetch-response.dto';
@@ -78,9 +77,9 @@ export class MealsService {
     return Object.values(p018Text).length === 0 ? null : p018Text;
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_6AM, {
-    timeZone: 'Asia/Seoul',
-  })
+  // @Cron(CronExpression.EVERY_DAY_AT_6AM, {
+  //   timeZone: 'Asia/Seoul',
+  // })
   public async routine() {
     const date = DateTime.local().setZone('Asia/Seoul').toFormat('yyyyMMdd');
     const content = await this.render(date);
