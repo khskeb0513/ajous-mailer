@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { FetchDto, FetchResponseDto, Sorted } from './dto/fetch-response.dto';
+import { SortedResponseDto, Sorted } from './dto/sorted-response.dto';
 import { DateTime } from 'luxon';
 import { HbsCompileService } from '../sender/hbs-compile.service';
+import { FetchResponseDto } from './dto/fetch-response.dto';
 
 @Injectable()
 export class AssignmentsService {
   constructor(private readonly httpService: HttpService) {}
 
   public async fetch(cookie: string): Promise<FetchResponseDto> {
-    if (!cookie) return null;
     const response = await lastValueFrom(
       this.httpService.get(
         'https://eclass2.ajou.ac.kr/learn/api/v1/calendars/calendarItems',
@@ -23,12 +23,17 @@ export class AssignmentsService {
           },
         },
       ),
-    ).catch((e) => {
+    ).catch(() => {
       return null;
     });
     if (!response) return null;
+    return response.data;
+  }
+
+  public async sortData(raw: any): Promise<SortedResponseDto> {
+    if (!raw) return null;
+    const data: FetchResponseDto = raw;
     const arr: Sorted[] = [];
-    const data: FetchDto = response.data;
     data.results
       .sort(
         (a, b) =>
@@ -78,12 +83,25 @@ export class AssignmentsService {
     };
   }
 
-  public async render(cookie: string) {
-    const response = await this.fetch(cookie);
-    if (!response) return null;
-    return HbsCompileService.compile(
-      '/render/assignments/render.hbs',
-      response,
-    );
+  public async render({ cookie = null, raw = null }) {
+    if (!!cookie) {
+      const fetchDto = await this.fetch(cookie);
+      const response = await this.sortData(fetchDto);
+      if (!response) return null;
+      return HbsCompileService.compile(
+        '/render/assignments/render.hbs',
+        response,
+      );
+    }
+    if (!!raw) {
+      const fetchDto = await this.fetch(cookie);
+      const response = await this.sortData(fetchDto);
+      if (!response) return null;
+      return HbsCompileService.compile(
+        '/render/assignments/render.hbs',
+        response,
+      );
+    }
+    return null;
   }
 }

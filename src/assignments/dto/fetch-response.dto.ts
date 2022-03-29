@@ -10,15 +10,6 @@ export class Results {
   color: string;
 }
 
-export class FetchDto {
-  results: Results[];
-}
-
-export class Sorted {
-  date: string;
-  results: Results[];
-}
-
 export class FetchResponseDto {
-  sorted: Sorted[];
+  results: Results[];
 }
