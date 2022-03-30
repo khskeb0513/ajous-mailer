@@ -57,8 +57,10 @@ export class AssignmentsService {
               },
             );
         value.startDate = setDate(value.startDate);
-        value.calendarNameLocalizable.rawValue =
-          value.calendarNameLocalizable.rawValue.split(': ')[1];
+        if (!!value.calendarNameLocalizable.rawValue) {
+          value.calendarNameLocalizable.rawValue =
+            value.calendarNameLocalizable.rawValue.split(': ')[1];
+        }
         const arrDate = DateTime.fromISO(value.endDate, {
           zone: 'UTC',
           locale: 'ko-KR',
@@ -94,6 +96,7 @@ export class AssignmentsService {
       );
     }
     if (!!raw) {
+      raw = JSON.parse(raw.replace(/\\/gi, ''));
       const response = await this.sortData(raw);
       if (!response) return null;
       return HbsCompileService.compile(
