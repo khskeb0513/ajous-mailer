@@ -94,8 +94,7 @@ export class AssignmentsService {
       );
     }
     if (!!raw) {
-      const fetchDto = await this.fetch(cookie);
-      const response = await this.sortData(fetchDto);
+      const response = await this.sortData(raw);
       if (!response) return null;
       return HbsCompileService.compile(
         '/render/assignments/render.hbs',
